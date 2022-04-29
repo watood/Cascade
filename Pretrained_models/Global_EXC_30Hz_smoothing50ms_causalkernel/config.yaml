@@ -5,24 +5,10 @@ sampling_rate: 30                             # Sampling rate in Hz
 
 # Dataset of ground truth data (in folder 'Ground_truth')   Example: DS13-GCaMP6s-m-V1
 training_datasets:
-- DS02-Cal520-m-S1
-- DS03-OGB1-zf-pDp
-- DS04-Cal520-zf-pDp
-- DS05-GCaMP6f-zf-aDp
-- DS06-GCaMP6f-zf-dD
-- DS07-GCaMP6f-zf-OB
-- DS08-GCaMP6f-m-V1
-- DS09-GCaMP6f-m-V1-neuropil-corrected
-- DS10-GCaMP6f-m-V1-neuropil-corrected
-- DS11-GCaMP6s-m-V1-neuropil-corrected
-- DS12-GCaMP6s-m-V1-neuropil-corrected
-- DS13-GCaMP6s-m-V1
-- DS14-GCaMP6s-m-V1
-- DS15-GCaMP6s-m-V1
-- DS16-GCaMP5k-m-V1
-- DS17-R-CaMP-m-CA3
-- DS18-R-CaMP-m-S1
-- DS19-jRCaMP1a-m-V1
+- DS03-Cal520-m-S1
+- DS04-OGB1-zf-pDp
+- DS05-Cal520-zf-pDp
+
 placeholder_1: 0       # protect formatting
 
 
@@ -68,7 +54,7 @@ dense_expansion: 30              # For dense layer
 loss_function: mean_squared_error     # gradient-descent loss function
 optimizer: Adagrad                    #                  optimizer
 
-nr_of_epochs: 10                 # Number of training epochs per model
+nr_of_epochs: 1                 # Number of training epochs per model
 ensemble_size: 5                 # Number of models trained for one noise level
 batch_size: 8192                 # Batch size
 
