@@ -275,7 +275,7 @@ def predict( model_name, traces, model_folder='Pretrained_models', threshold=0, 
     # calculate noise levels for each trace
     trace_noise_levels = utils.calculate_noise_levels(traces, sampling_rate)
 
-    print('Noise levels (mean, std; in standard units): '+str(int(np.nanmean(trace_noise_levels*100))/100)+', '+str(int(np.nanstd(trace_noise_levels*100))/100))
+    #print('Noise levels (mean, std; in standard units): '+str(int(np.nanmean(trace_noise_levels*100))/100)+', '+str(int(np.nanstd(trace_noise_levels*100))/100))
 
     # Get model paths as dictionary (key: noise_level) with lists of model
     # paths for the different ensembles
