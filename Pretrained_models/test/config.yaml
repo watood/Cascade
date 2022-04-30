@@ -6,6 +6,7 @@ sampling_rate: 30                             # Sampling rate in Hz
 # Dataset of ground truth data (in folder 'Ground_truth')   Example: DS13-GCaMP6s-m-V1
 training_datasets:
 - DS03-Cal520-m-S1
+- DS04-OGB1-zf-pDp
 
 
 placeholder_1: 0       # protect formatting
