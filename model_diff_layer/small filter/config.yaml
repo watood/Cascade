@@ -1,6 +1,6 @@
 ## Main parameter of this model:
 
-model_name: small      # Name of the model
+model_name: small filter      # Name of the model
 sampling_rate: 30                             # Sampling rate in Hz
 
 # Dataset of ground truth data (in folder 'Ground_truth')   Example: DS13-GCaMP6s-m-V1
