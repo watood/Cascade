@@ -77,12 +77,6 @@ def define_model(filter_sizes,filter_numbers,dense_expansion,windowsize,loss_fun
   conv_filter = Conv1D
 
   outX = conv_filter(filter_numbers[0], filter_sizes[0], strides=1, activation='relu')(inputs)
-  outX = conv_filter(filter_numbers[1], filter_sizes[1], activation='relu')(outX)
-  outX = MaxPooling1D(2)(outX)
-  outX = conv_filter(filter_numbers[2], filter_sizes[2], activation='relu')(outX)
-  outX = conv_filter(filter_numbers[3], filter_sizes[3], activation='relu')(outX)
-  outX = MaxPooling1D(2)(outX)
-  outX = conv_filter(filter_numbers[4], filter_sizes[4], activation='relu')(outX)
   outX = MaxPooling1D(2)(outX)
 
   outX = Dense(dense_expansion, activation='relu')(outX) # 'linear' units work here as well!
