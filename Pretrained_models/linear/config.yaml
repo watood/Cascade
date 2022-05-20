@@ -53,9 +53,9 @@ before_frac: 0.5                 # Fraction of timepoints before prediction poin
 
 # Filter sizes for each convolutional layer
 filter_sizes:
-- 15
-- 9
-- 3
+- 31
+- 19
+- 5
 
 # Filter numbers for each convolutional layer
 filter_numbers:
