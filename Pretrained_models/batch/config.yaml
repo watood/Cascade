@@ -2,7 +2,7 @@
 ### Main parameter of this model:
 ###
 
-model_name: Global_EXC_30Hz_smoothing200ms                    # Name of the model
+model_name: batch                   # Name of the model
 sampling_rate: 30                             # Sampling rate in Hz
 
 # Dataset of ground truth data (in folder 'GT_datasets')   Example: GT_dataset_GC6s_Chen
