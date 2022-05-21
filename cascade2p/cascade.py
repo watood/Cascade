@@ -166,8 +166,8 @@ def train_model( model_name, model_folder='Pretrained_models', ground_truth_fold
             from tensorflow.keras.models import Sequential
             
             model = Sequential()
-            model.add(LSTM(units=25, activation='relu',input_shape=(64,1)),return_sequences=True)
-            model.add(LSTM(units=25, activation='relu',input_shape=(64,1)),return_sequences=False)
+            model.add(LSTM(units=25, activation='relu',return_sequences=True,input_shape=(64,1)))
+            model.add(LSTM(units=25, activation='relu',return_sequences=False,input_shape=(64,1)))
             model.add(Dense(50, activation='relu'))
             
             
