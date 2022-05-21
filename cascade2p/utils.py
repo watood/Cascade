@@ -76,16 +76,18 @@ def define_model(filter_sizes,filter_numbers,dense_expansion,windowsize,loss_fun
 
   conv_filter = Conv1D
 
-  outX = conv_filter(filter_numbers[0], filter_sizes[0], strides=1, activation='linear')(inputs)
-  outX = conv_filter(filter_numbers[1], filter_sizes[1], activation='linear')(outX)
-
+  outX = conv_filter(filter_numbers[0], filter_sizes[0], strides=1, activation='relu')(inputs)
+  outX = BatchNormalization()(outX)
+  outX = conv_filter(filter_numbers[1], filter_sizes[1], activation='relu')(outX)
+  outX = BatchNormalization()(outX)
   outX = MaxPooling1D(2)(outX)
-  outX = conv_filter(filter_numbers[2], filter_sizes[2], activation='linear')(outX)
+  outX = conv_filter(filter_numbers[2], filter_sizes[2], activation='relu')(outX)
+  outX = BatchNormalization()(outX)
 
   outX = MaxPooling1D(2)(outX)
   
-  outX = Dense(dense_expansion, activation='linear')(outX) # 'linear' units work here as well!
- 
+  outX = Dense(dense_expansion, activation='relu')(outX) # 'linear' units work here as well!
+  outX = BatchNormalization()(outX)
   outX = Flatten()(outX)
   predictions = Dense(1,activation='linear')(outX)
   model = Model(inputs=[inputs],outputs=predictions)
