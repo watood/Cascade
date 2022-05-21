@@ -73,10 +73,7 @@ def define_model(filter_sizes,filter_numbers,dense_expansion,windowsize,loss_fun
   from tensorflow.keras.optimizers import Adagrad
 
   inputs = Input(shape=(windowsize,1))
-  import keras.backend as K
-  from keras.layers import Lambda
-
-  inputs = Lambda(lambda d_1:K.expand_dims(inputs,axis=-1))(inputs)
+  inputs = inputs.reshape(-1,64,1)
   print("看看：",inputs)
  
   conv_filter = Conv1D
