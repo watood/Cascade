@@ -30,9 +30,6 @@ placeholder_1: 0       # protect formatting
 
 # Noise levels for training (integers, normally 1-9)
 noise_levels:
-- 3
-- 4
-- 5
 - 6
 - 7
 - 8
