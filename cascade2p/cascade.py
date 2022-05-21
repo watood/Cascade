@@ -153,14 +153,26 @@ def train_model( model_name, model_folder='Pretrained_models', ground_truth_fold
 
                 print('Window size enlarged to '+str(cfg['windowsize']) +' time points due to the high calcium imaging sampling rate('+str(cfg['sampling_rate'])+').')
 
-            model = utils.define_model(
-                                filter_sizes = cfg['filter_sizes'],
-                                filter_numbers = cfg['filter_numbers'],
-                                dense_expansion = cfg['dense_expansion'],
-                                windowsize = cfg['windowsize'],
-                                loss_function = cfg['loss_function'],
-                                optimizer = cfg['optimizer']
-                                        )
+            #model = utils.define_model(
+            #                    filter_sizes = cfg['filter_sizes'],
+            #                    filter_numbers = cfg['filter_numbers'],
+            #                    dense_expansion = cfg['dense_expansion'],
+            #                    windowsize = cfg['windowsize'],
+            #                    loss_function = cfg['loss_function'],
+            #                    optimizer = cfg['optimizer']
+            #                            )
+            
+            
+            
+            model = Sequential()
+            model.add(LSTM(units=25, activation='relu',input_shape=(64,1)),return_sequences=True)
+            model.add(LSTM(units=25, activation='relu',input_shape=(64,1)),return_sequences=False)
+            model.add(Dense(50, activation='relu'))
+            
+            
+            
+            
+            
             
             optimizer = Adagrad(learning_rate=0.05)
             model.compile( loss = cfg['loss_function'],
