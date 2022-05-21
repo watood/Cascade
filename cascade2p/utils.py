@@ -73,7 +73,7 @@ def define_model(filter_sizes,filter_numbers,dense_expansion,windowsize,loss_fun
   from tensorflow.keras.optimizers import Adagrad
 
   inputs = Input(shape=(windowsize,1))
-  inputs = inputs.reshape(windowsize,1,None)
+  inputs = np.expand_dims(inputs, axis=0)
 
 
 
