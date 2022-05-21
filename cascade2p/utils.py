@@ -41,7 +41,7 @@ Keras is a high-level user interface for the deep learning framework TensorFlow.
 import os
 import glob as glob
 import matplotlib.pyplot as plt
-
+import tensorflow as tf
 import numpy as np
 
 import scipy.io as sio
@@ -73,7 +73,7 @@ def define_model(filter_sizes,filter_numbers,dense_expansion,windowsize,loss_fun
   from tensorflow.keras.optimizers import Adagrad
 
   inputs = Input(shape=(windowsize,1))
-  inputs = inputs.reshape(-1,64,1)
+  inputs = tf.reshape(inputs, [-1, windowsize,1])
   print("看看：",inputs)
  
   conv_filter = Conv1D
