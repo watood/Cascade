@@ -73,12 +73,16 @@ def define_model(filter_sizes,filter_numbers,dense_expansion,windowsize,loss_fun
   from tensorflow.keras.optimizers import Adagrad
 
   inputs = Input(shape=(windowsize,1))
+  import keras.backend as K
+  from keras.layers import Lambda
+
+  inputs = Lambda(lambda d_1:K.expand_dims(inputs,axis=-1))(inputs)
   print("看看：",inputs)
  
   conv_filter = Conv1D
   
-  outX = LSTM(units=25,input_shape=(windowsize,1),activation='relu')(inputs)
-  outX = LSTM(units=25,input_shape=(windowsize,1),activation='relu')(outX)
+  outX = LSTM(units=25,activation='relu')(inputs)
+  outX = LSTM(units=25,activation='relu')(outX)
 
   
   outX = Dense(50, activation='relu')(outX) # 'linear' units work here as well!
