@@ -170,7 +170,7 @@ def train_model( model_name, model_folder='Pretrained_models', ground_truth_fold
 
             model.fit(X,Y,
                       batch_size = cfg['batch_size'],
-                      epochs = 20,
+                      epochs = 30,
                       verbose = cfg['verbose'])
 
             # save model
