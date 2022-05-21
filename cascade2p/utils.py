@@ -80,7 +80,7 @@ def define_model(filter_sizes,filter_numbers,dense_expansion,windowsize,loss_fun
   outX = LSTM(units=25,activation='relu')(outX)
 
   
-  outX = Dense(dense_expansion, activation='relu')(outX) # 'linear' units work here as well!
+  outX = Dense(50, activation='relu')(outX) # 'linear' units work here as well!
   outX = Flatten()(outX)
   predictions = Dense(1,activation='linear')(outX)
   model = Model(inputs=[inputs],outputs=predictions)
