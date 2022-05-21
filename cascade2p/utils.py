@@ -73,7 +73,7 @@ def define_model(filter_sizes,filter_numbers,dense_expansion,windowsize,loss_fun
   from tensorflow.keras.optimizers import Adagrad
 
   inputs = Input(shape=(windowsize,1,))
-  X_train = X_train.reshape(dimi_x,dim_y,dim_z)
+ 
 
 
   conv_filter = Conv1D
