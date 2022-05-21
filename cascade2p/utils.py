@@ -85,7 +85,7 @@ def define_model(filter_sizes,filter_numbers,dense_expansion,windowsize,loss_fun
   outX = MaxPooling1D(2)(outX)
   
   outX = Dense(dense_expansion, activation='linear')(outX) # 'linear' units work here as well!
-  outX = BatchNormalization()(outX)
+ 
   outX = Flatten()(outX)
   predictions = Dense(1,activation='linear')(outX)
   model = Model(inputs=[inputs],outputs=predictions)
