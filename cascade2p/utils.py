@@ -68,13 +68,13 @@ def define_model(filter_sizes,filter_numbers,dense_expansion,windowsize,loss_fun
 
   """
 
-  from tensorflow.keras.layers import Dense, Flatten, MaxPooling1D, Conv1D, Input,BatchNormalization,LSTM
+  from tensorflow.keras.layers import Dense, Flatten, MaxPooling1D, Conv1D, Input,BatchNormalization,LSTM,LocallyConnected1D
   from tensorflow.keras import Model
   from tensorflow.keras.optimizers import Adagrad
 
   inputs = Input(shape=(windowsize,1))
  
-  conv_filter = Conv1D
+  conv_filter = LocallyConnected1D
   
 
   outX = conv_filter(filter_numbers[0], filter_sizes[0], strides=1, activation='relu')(inputs)
