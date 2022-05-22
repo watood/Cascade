@@ -74,7 +74,7 @@ def define_model(filter_sizes,filter_numbers,dense_expansion,windowsize,loss_fun
 
   inputs = Input(shape=(windowsize,1))
  
-  conv_filter = LocallyConnected1D
+  conv_filter = Conv1D
   
 
   outX = conv_filter(filter_numbers[0], filter_sizes[0], strides=1, activation='relu')(inputs)
