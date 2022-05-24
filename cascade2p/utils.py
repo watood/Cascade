@@ -536,7 +536,7 @@ def plot_dFF_traces(traces,neuron_indices,frame_rate,spiking=None,discrete_spike
 
     if spiking is not None:
 
-      axs[subplot_ix].plot(time,spiking[neuron_index,:t_max])
+      axs[subplot_ix].plot(time,spiking[neuron_index,:t_max]-1)
 
     if discrete_spikes is not None:
 
