@@ -283,7 +283,7 @@ def calibrated_ground_truth_artificial_noise(ground_truth_folder,noise_level,sam
             fluo_level /= np.median(fluo_level)
 
             noise_additional = np.random.normal(0,noise_std*fluo_level, traces_mean.shape)
-            sub_traces_single = traces_mean + noise_additional
+            sub_traces_single = traces_mean #+ noise_additional
 
             # 'sub_traces' are sub-sampled replica traces from the same mean trace 'traces_mean';
             # 'sub_traces_events' are the corresponding ground truth action potentials
@@ -532,7 +532,7 @@ def plot_dFF_traces(traces,neuron_indices,frame_rate,spiking=None,discrete_spike
     subplot_ix = int(k/2), int(np.mod(k,2))
     axs[subplot_ix].plot(time,traces[neuron_index,:])
     axs[subplot_ix].set_ylim(y_range)
-    axs[subplot_ix].set_xlim(0,10)
+    axs[subplot_ix].set_xlim(32/frame_rate, t_max/frame_rate - 32/frame_rate)
 
     if spiking is not None:
 
