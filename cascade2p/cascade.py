@@ -199,7 +199,7 @@ def train_model( model_name, model_folder='Pretrained_models', ground_truth_fold
     print('Runtime: {:.0f} min'.format((time.time() - start)/60))
 
 
-def predict( model_name, traces, model_folder='Pretrained_models', threshold='false', padding=np.nan ):
+def predict( model_name, traces, model_folder='Pretrained_models', threshold='False', padding=np.nan ):
 
     """ Use a specific trained neural network ('model_name') to predict spiking activity for calcium traces ('traces')
 
