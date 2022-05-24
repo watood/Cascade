@@ -518,7 +518,7 @@ def plot_dFF_traces(traces,neuron_indices,frame_rate,spiking=None,discrete_spike
   t_max = int(np.minimum(50.0,traces.shape[1]/frame_rate)*frame_rate)
   traces = traces[:,:t_max]
 
-  time = np.arange(0,10)/frame_rate
+  time = np.arange(0,traces.shape[1])/frame_rate
 
   fig, axs = plt.subplots(int(np.ceil(len(neuron_indices)/2)), 2,  sharex=True, sharey=True)
   fig.add_subplot(111, frameon=False)
