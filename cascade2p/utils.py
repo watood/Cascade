@@ -532,7 +532,7 @@ def plot_dFF_traces(traces,neuron_indices,frame_rate,spiking=None,discrete_spike
     subplot_ix = int(k/2), int(np.mod(k,2))
     axs[subplot_ix].plot(time,traces[neuron_index,:])
     axs[subplot_ix].set_ylim(y_range)
-    axs[subplot_ix].set_xlim(32/frame_rate, t_max/frame_rate - 32/frame_rate)
+    axs[subplot_ix].set_xlim(0,10)
 
     if spiking is not None:
 
