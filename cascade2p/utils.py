@@ -84,7 +84,7 @@ def define_model(filter_sizes,filter_numbers,dense_expansion,windowsize,loss_fun
   outX = Flatten()(outX)
   print("看看",outX)
   
-  outX = outX.map(lambda x, y: (tf.reshape(x, shape=[None, None, 510]), y))
+  outX= tf.reshape(outX, [None, None, 510])
   
   outX = LSTM(25 , activation='relu')(outX)
   
