@@ -164,11 +164,10 @@ def train_model( model_name, model_folder='Pretrained_models', ground_truth_fold
             
             from tensorflow.keras.layers import Dense,LSTM,Conv1D,MaxPooling1D,TimeDistributed,Flatten
             from tensorflow.keras.models import Sequential
+           
             
             model = Sequential()
-            
-            model = Sequential()
-            model.add(TimeDistributed(Conv1D(filters=30, kernel_size=31, activation='relu')))
+            model.add(TimeDistributed(Conv1D(filters=30, kernel_size=31,strides=1, activation='relu',input_shape=(64,1))))
             model.add(TimeDistributed(MaxPooling1D(pool_size=2)))
             model.add(TimeDistributed(Flatten()))
             model.add(LSTM(25))
