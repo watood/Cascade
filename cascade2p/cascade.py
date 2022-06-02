@@ -162,7 +162,7 @@ def train_model( model_name, model_folder='Pretrained_models', ground_truth_fold
             #                    optimizer = cfg['optimizer']
             #                            )
             
-            from tensorflow.keras.layers import Dense,LSTM,Conv1D,MaxPooling1D,TimeDistributed
+            from tensorflow.keras.layers import Dense,LSTM,Conv1D,MaxPooling1D,TimeDistributed,Flatten
             from tensorflow.keras.models import Sequential
             
             model = Sequential()
