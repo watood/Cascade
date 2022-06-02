@@ -82,7 +82,7 @@ def define_model(filter_sizes,filter_numbers,dense_expansion,windowsize,loss_fun
   outX = MaxPooling1D(2)(outX)
 
   outX = Flatten()(outX)
-  
+  print("看看",outX)
   outX = LSTM(25 , activation='relu')(outX)
   
   outX = Dense(dense_expansion, activation='relu')(outX) # 'linear' units work here as well!
