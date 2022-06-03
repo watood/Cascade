@@ -399,7 +399,147 @@ def predict( model_name, traces, model_folder='Pretrained_models', threshold=Fal
     return Y_predict
 
 
+def predict_LSTM( model_name, traces, model_folder='Pretrained_models', threshold=False, padding=np.nan ):
 
+    import tensorflow.keras
+    from tensorflow.keras.models import load_model
+
+    model_path = os.path.join(model_folder, model_name)
+    cfg_file = os.path.join( model_path, 'config.yaml')
+
+    # check if configuration file can be found
+    if not os.path.isfile(cfg_file):
+        m = 'The configuration file "config.yaml" can not be found at the location "{}".\n'.format( os.path.abspath(cfg_file) ) + \
+            'You have provided the model "{}" at the absolute or relative path "{}".\n'.format( model_name, model_folder) + \
+            'Please check if there is a folder for model "{}" at the location "{}".'.format( model_name, os.path.abspath(model_folder))
+        print(m)
+        raise Exception(m)
+
+    # Load config file
+    cfg = config.read_config( cfg_file )
+
+    # extract values from config file into variables
+    verbose = cfg['verbose']
+    training_data = cfg['training_datasets']
+    ensemble_size = cfg['ensemble_size']
+    batch_size = cfg['batch_size']
+    sampling_rate = cfg['sampling_rate']
+    before_frac = cfg['before_frac']
+    window_size = cfg['windowsize']
+    noise_levels_model = cfg['noise_levels']
+    smoothing = cfg['smoothing']
+    causal_kernel = cfg['causal_kernel']
+
+    model_description = '\n \nThe selected model was trained on '+str(len(training_data))+' datasets, with '+str(ensemble_size)+' ensembles for each noise level, at a sampling rate of '+str(sampling_rate)+'Hz,'
+    if causal_kernel:
+      model_description += ' with a resampled ground truth that was smoothed with a causal kernel'
+    else:
+      model_description += ' with a resampled ground truth that was smoothed with a Gaussian kernel'
+    model_description += ' of a standard deviation of '+str(int(1000*smoothing))+' milliseconds. \n \n'
+    print(model_description)
+
+    if verbose: print('Loaded model was trained at frame rate {} Hz'.format(sampling_rate))
+    if verbose: print('Given argument traces contains {} neurons and {} frames.'.format( traces.shape[0], traces.shape[1]))
+
+    # calculate noise levels for each trace
+    trace_noise_levels = utils.calculate_noise_levels(traces, sampling_rate)
+
+    #print('Noise levels (mean, std; in standard units): '+str(int(np.nanmean(trace_noise_levels*100))/100)+', '+str(int(np.nanstd(trace_noise_levels*100))/100))
+
+    # Get model paths as dictionary (key: noise_level) with lists of model
+    # paths for the different ensembles
+    model_dict = get_model_paths( model_path )  # function defined below
+    if verbose > 2: print('Loaded models:', str(model_dict))
+
+    # XX has shape: (neurons, timepoints, windowsize)
+    XX = utils.preprocess_traces_LSTM(traces,
+                            before_frac = before_frac,
+                            window_size = window_size)
+    Y_predict = np.zeros( (XX.shape[0], XX.shape[1]) )
+
+
+    # Use for each noise level the matching model
+    for i, model_noise in enumerate(noise_levels_model):
+
+        if verbose: print('\nPredictions for noise level {}:'.format(model_noise))
+
+        # select neurons which have this noise level:
+        if i == 0:   # lowest noise
+            neuron_idx = np.where( trace_noise_levels < model_noise + 0.5 )[0]
+        elif i == len(noise_levels_model)-1:   # highest noise
+            neuron_idx = np.where( trace_noise_levels >= model_noise - 0.5 )[0]
+        else:
+            neuron_idx = np.where( (trace_noise_levels >= model_noise - 0.5) & (trace_noise_levels < model_noise + 0.5) )[0]
+
+        if len(neuron_idx) == 0:  # no neurons were selected
+            if verbose: print('\tNo neurons for this noise level')
+            continue   # jump to next noise level
+
+        # load keras models for the given noise level
+        models = list()
+        for model_path in model_dict[model_noise]:
+            models.append( load_model( model_path ) )
+
+        # select neurons and merge neurons and timepoints into one dimension
+        XX_sel = XX[neuron_idx, :, :]
+
+        XX_sel = np.reshape( XX_sel, (XX_sel.shape[0]*XX_sel.shape[1], XX_sel.shape[2]) )
+        XX_sel = np.expand_dims(XX_sel,axis=2)   # add empty third dimension to match training shape
+
+        for j, model in enumerate(models):
+            if verbose: print('\t... ensemble', j)
+
+            prediction_flat = model.predict(XX_sel, batch_size, verbose=verbose )
+            prediction = np.reshape(prediction_flat, (len(neuron_idx),XX.shape[1]))
+
+            Y_predict[neuron_idx,:] += prediction / len(models)  # average predictions
+
+        # remove models from memory
+        tensorflow.keras.backend.clear_session()
+
+
+    if threshold is False:  # only if 'False' is passed as argument
+        if verbose: print('Skipping the thresholding. There can be negative values in the result.')
+
+    elif threshold == 1:     # (1 or True)
+      # Cut off noise floor (lower than 1/e of a single action potential)
+
+      from scipy.ndimage.filters import gaussian_filter
+      from scipy.ndimage.morphology import binary_dilation
+
+      # find out empirically  how large a single AP is (depends on frame rate and smoothing)
+      single_spike = np.zeros(1001,)
+      single_spike[501] = 1
+      single_spike_smoothed = gaussian_filter(single_spike.astype(float), sigma=smoothing*sampling_rate)
+      threshold_value = np.max(single_spike_smoothed)/np.exp(1)
+
+      # Set everything below threshold to zero.
+      # Use binary dilation to avoid clipping of true events.
+      for neuron in range(Y_predict.shape[0]):
+        # ignore warning because of nan's in Y_predict in comparison with value
+        with np.errstate(invalid='ignore'):
+            activity_mask = Y_predict[neuron,:] > threshold_value
+        activity_mask = binary_dilation(activity_mask,iterations = int(smoothing*sampling_rate))
+
+        Y_predict[neuron,~activity_mask] = 0
+
+        Y_predict[Y_predict<0] = 0  # set possible negative values in dilated mask to 0
+
+    elif threshold == 0:
+      # ignore warning because of nan's in Y_predict in comparison with value
+      with np.errstate(invalid='ignore'):
+          Y_predict[Y_predict<0] = 0
+
+    else:
+        raise Exception('Invalid value of threshold "{}". Only 0, 1 (or True) or False allowed'.format(threshold))
+
+    # NaN or 0 for first and last datapoints, for which no predictions can be made
+    Y_predict[:,0:int(before_frac*window_size)] = padding
+    Y_predict[:,-int((1-before_frac)*window_size):] = padding
+
+    print('Done')
+
+    return Y_predict
 
 
 def verify_config_dict( config_dictionary ):
