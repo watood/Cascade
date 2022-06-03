@@ -145,6 +145,9 @@ def preprocess_traces(neurons_x_time, before_frac, window_size):
     window_indexes = (np.expand_dims(np.arange(window_size), 0) + np.expand_dims(np.arange(dF_traces.shape[1] - window_size + 1), 0).T)
     X = np.full(shape=(dF_traces.shape[0], dF_traces.shape[1], window_size), fill_value=np.nan)
     X[:, start:end, :] = dF_traces[:, window_indexes]
+    
+    X = np.expand_dims(X[:, start:end, :],axis=2)
+    
     return X
 
 
