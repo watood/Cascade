@@ -179,8 +179,8 @@ def train_model( model_name, model_folder='Pretrained_models', ground_truth_fold
             #model.add(Dense(1, activation='linear'))
 
             model = Sequential()
-            model.add(LSTM(units=25, activation='relu',return_sequences=True,input_shape=(64,1)))
-            model.add(LSTM(units=25, activation='relu',return_sequences=False,input_shape=(64,1)))
+            model.add(LSTM(units=25, activation='relu',input_shape=(64,1)))
+            model.add(LSTM(units=25, activation='relu'))
             model.add(Dense(50, activation='relu'))
             model.add(Dense(1, activation='linear'))
           
