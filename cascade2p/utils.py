@@ -146,11 +146,36 @@ def preprocess_traces(neurons_x_time, before_frac, window_size):
     X = np.full(shape=(dF_traces.shape[0], dF_traces.shape[1], window_size), fill_value=np.nan)
     X[:, start:end, :] = dF_traces[:, window_indexes]
     
-    X = np.expand_dims(X[:, start:end, :],axis=2)
     
     return X
 
 
+def preprocess_traces_LSTM(neurons_x_time, before_frac, window_size):
+
+    """
+    Transform dF/F data into a format that can be used by the deep network.
+
+    For each time point, a window of the size 'window_size' of the dF/F is extracted.
+
+    input:  dF/F traces (matrix with nb_neurons x time_points)
+            window_size (size of the receptive window of the deep network)
+            before_frac (positioning of the window around the current time point; 0.5 means center position)
+    output: X, a matrix with nb_neurons x time_points x window_size
+
+    """
+    dF_traces = neurons_x_time
+    start = int(before_frac * window_size -1)
+    end = dF_traces.shape[1] - window_size + start + 1
+    # extract a moving window from the calcium trace
+    window_indexes = (np.expand_dims(np.arange(window_size), 0) + np.expand_dims(np.arange(dF_traces.shape[1] - window_size + 1), 0).T)
+    X = np.full(shape=(dF_traces.shape[0], dF_traces.shape[1], window_size), fill_value=np.nan)
+    X[:, start:end, :] = dF_traces[:, window_indexes]
+    
+    X = np.expand_dims(X[:, start:end, :],axis=2)
+    
+    return X
+
+  
 
 
 def calibrated_ground_truth_artificial_noise(ground_truth_folder,noise_level,sampling_rate,replicas,omission_list=[], verbose=3):
