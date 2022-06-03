@@ -36,7 +36,7 @@ import time
 import numpy as np
 import warnings
 from . import config, utils
-from tensorflow.keras import model
+from keras.models import Sequential
 
 
 
@@ -177,15 +177,12 @@ def train_model( model_name, model_folder='Pretrained_models', ground_truth_fold
             #model.add(Dense(50, activation='relu'))
             #model.add(Dense(1, activation='linear'))
 
-            
+            model = Sequential()
             model.add(LSTM(units=25, activation='relu',return_sequences=True,input_shape=(64,1)))
             model.add(LSTM(units=25, activation='relu',return_sequences=False,input_shape=(64,1)))
             model.add(Dense(50, activation='relu'))
             model.add(Dense(1, activation='linear'))
-            
-            
-            
-            
+          
             
             optimizer = Adagrad(learning_rate=0.05)
             model.compile( loss = cfg['loss_function'],
