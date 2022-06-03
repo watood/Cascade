@@ -72,6 +72,7 @@ def train_model( model_name, model_folder='Pretrained_models', ground_truth_fold
     """
     import tensorflow.keras
     from tensorflow.keras.optimizers import Adagrad
+    from keras.layers import LSTM,Dense
 
     model_path = os.path.join(model_folder, model_name)
     cfg_file = os.path.join( model_path, 'config.yaml')
