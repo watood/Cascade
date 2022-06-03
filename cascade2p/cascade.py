@@ -162,27 +162,25 @@ def train_model( model_name, model_folder='Pretrained_models', ground_truth_fold
             #                    optimizer = cfg['optimizer']
             #                            )
             
-            print("看看",X)
-            print("看看",Y)
             
-            from tensorflow.keras.layers import Dense,LSTM,Conv1D,MaxPooling1D,TimeDistributed,Flatten,Input
-            from tensorflow.keras.models import Sequential
+            #from tensorflow.keras.layers import Dense,LSTM,Conv1D,MaxPooling1D,TimeDistributed,Flatten,Input
+            #from tensorflow.keras.models import Sequential
            
             
-            model = Sequential()
-            model.add(Input(shape=(64,1,)))
-            model.add(TimeDistributed(Conv1D(filters=30, kernel_size=31,strides=1, activation='relu',input_shape=(64,1,))))
-            model.add(TimeDistributed(MaxPooling1D(pool_size=2)))
-            model.add(TimeDistributed(Flatten()))
-            model.add(LSTM(25))
-            model.add(Dense(50, activation='relu'))
-            model.add(Dense(1, activation='linear'))
+            #model = Sequential()
+            #model.add(Input(shape=(64,1,)))
+            #model.add(TimeDistributed(Conv1D(filters=30, kernel_size=31,strides=1, activation='relu',input_shape=(64,1,))))
+            #model.add(TimeDistributed(MaxPooling1D(pool_size=2)))
+            #model.add(TimeDistributed(Flatten()))
+            #model.add(LSTM(25))
+            #model.add(Dense(50, activation='relu'))
+            #model.add(Dense(1, activation='linear'))
 
             
-           #model.add(LSTM(units=25, activation='relu',return_sequences=True,input_shape=(64,1)))
-            #model.add(LSTM(units=25, activation='relu',return_sequences=False,input_shape=(64,1)))
-            #model.add(Dense(50, activation='relu'))
-            
+            model.add(LSTM(units=25, activation='relu',return_sequences=True,input_shape=(64,1)))
+            model.add(LSTM(units=25, activation='relu',return_sequences=False,input_shape=(64,1)))
+            model.add(Dense(50, activation='relu'))
+            model.add(Dense(1, activation='linear'))
             
             
             
