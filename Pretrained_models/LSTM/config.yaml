@@ -12,8 +12,7 @@ training_datasets:
 - DS05-Cal520-zf-pDp
 - DS06-GCaMP6f-zf-aDp
 - DS07-GCaMP6f-zf-dD
-- DS08-GCaMP6f-zf-OB
-- DS09-GCaMP6f-m-V1
+
 
 placeholder_1: 0       # protect formatting
 
