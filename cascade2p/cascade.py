@@ -336,9 +336,13 @@ def predict( model_name, traces, model_folder='Pretrained_models', threshold=Fal
 
         # select neurons and merge neurons and timepoints into one dimension
         XX_sel = XX[neuron_idx, :, :]
+        print("1---",XX_sel.shape)
 
         XX_sel = np.reshape( XX_sel, (XX_sel.shape[0]*XX_sel.shape[1], XX_sel.shape[2]) )
+        print("2---",XX_sel.shape)
+        
         XX_sel = np.expand_dims(XX_sel,axis=2)   # add empty third dimension to match training shape
+        print("3---",XX_sel.shape)
 
         for j, model in enumerate(models):
             if verbose: print('\t... ensemble', j)
